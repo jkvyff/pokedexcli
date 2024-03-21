@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/jenskvyff/pokedexcli/internal/pokeapi"
+	"github.com/jkvyff/pokedexcli/internal/pokeapi"
 )
 
 func main() {
