@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func startRepl() {
+func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("-------Simple Pokedex-------")
 	fmt.Print(" > ")
@@ -31,7 +31,10 @@ func startRepl() {
 			continue
 		}
 
-		command.callback()
+		err := command.callback(cfg)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 
 }
@@ -39,20 +42,30 @@ func startRepl() {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*config) error
 }
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
+		"exit": {
+			name:        "exit",
+			description: "Exit the Pokedex",
+			callback:    callbackExit,
+		},
 		"help": {
 			name:        "help",
 			description: "Displays a help message",
 			callback:    callbackHelp,
 		},
-		"exit": {
-			name:        "exit",
-			description: "Exit the Pokedex",
-			callback:    callbackExit,
+		"map": {
+			name:        "map",
+			description: "Provides the next page of areas",
+			callback:    callbackMap,
+		},
+		"mapb": {
+			name:        "map",
+			description: "Provides the previous page of areas",
+			callback:    callbackMapb,
 		},
 	}
 }
